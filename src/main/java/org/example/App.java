@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.controller.ArticleController;
+import org.example.controller.MemberController;
 import org.example.system.SystemController;
 
 public class App {
@@ -9,8 +10,11 @@ public class App {
 
         SystemController systemController = new SystemController();
         ArticleController articleController = new ArticleController();
+        MemberController memberController = new MemberController();
 
         systemController.start();
+        articleController.make();
+        memberController.make();
 
         while(true){
 
@@ -24,17 +28,20 @@ public class App {
             if(cmd.equals("exit")){
                 systemController.exit();
                 break;
-            }
-            if(cmd.equals("article write")){
+            } else if (cmd.equals("member join")) {
+                memberController.join();
+            } else if (cmd.equals("member list")) {
+                memberController.list();
+            } else if(cmd.equals("article write")){
                 articleController.write();
-            } else if (cmd.equals("article list")) {
-                articleController.list();
-            } else if (cmd.equals("article detail")){
+            } else if (cmd.startsWith("article list")) {
+                articleController.list(cmd);
+            } else if (cmd.startsWith("article detail")){
                 articleController.detail(cmd);
-
             } else if (cmd.startsWith("article delete")){
                 articleController.delete(cmd);
             } else if(cmd.startsWith("article modify")){
+                System.out.println("==게시글 수정==");
                 articleController.modify(cmd);
             } else {
                 System.out.println("사용할 수 없는 명령어입니다.");

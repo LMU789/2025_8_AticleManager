@@ -5,12 +5,12 @@ public class Article {
     private int id;
     private String title; // 제목
     private String body; // 내용
-    private String reqDate;
+    private String regDate;
     private String updateDate;
 
-    public Article(int id,String date, String title, String body) {
+    public Article(int id, String title, String body,String date) {
         this.id = id;
-        this.reqDate = date;
+        this.regDate = date;
         this.updateDate = date;
         this.title = title;
         this.body = body;
@@ -49,12 +49,12 @@ public class Article {
         this.body = body;
     }
 
-    public String getReqDate() {
-        return reqDate;
+    public String getRegDate() {
+        return regDate;
     }
 
-    public void setReqDate(String date) {
-        this.reqDate = date;
+    public void setRegDate(String date) {
+        this.regDate = date;
     }
 
     public String getUpdateDate() {
