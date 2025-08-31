@@ -1,17 +1,43 @@
 package org.example.controller;
 
-import org.example.Container;
+import org.example.util.Container;
 import org.example.util.Util;
 import org.example.vo.Article;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 
     private int lastId = 3;
     private List<Article> articleList = new ArrayList<Article>();
     private int id = -1;
+    private String cmd;
+
+    @Override
+    public void doAction(String cmd, String actionMethodName){
+        this.cmd = cmd;
+        switch (actionMethodName) {
+            case "write":
+                write();
+                break;
+            case "list":
+                list();
+                break;
+            case "detail":
+                detail();
+                break;
+            case "delete":
+                delete();
+                break;
+            case "modify":
+                modify();
+                break;
+            default:
+                break;
+        }
+
+    }
 
     public void write() {
 
@@ -32,7 +58,7 @@ public class ArticleController {
 
     }
 
-    public void list(String cmd) {
+    public void list() {
         System.out.println("=".repeat(50));
         System.out.println("번호      /      제목     /      내용     /      날짜");
 
@@ -64,7 +90,7 @@ public class ArticleController {
         }
     }
 
-    public void detail(String cmd) {
+    public void detail() {
 
         try {
             id = Integer.parseInt(cmd.split(" ")[2]);
@@ -90,7 +116,7 @@ public class ArticleController {
         System.out.println("내용   : " + foundArticle.getBody());
     }
 
-    public void delete(String cmd) {
+    public void delete() {
 
         try {
             id = Integer.parseInt(cmd.split(" ")[2]);
@@ -114,7 +140,7 @@ public class ArticleController {
 
     }
 
-    public void modify(String cmd) {
+    public void modify() {
 
         try {
             id = Integer.parseInt(cmd.split(" ")[2]);

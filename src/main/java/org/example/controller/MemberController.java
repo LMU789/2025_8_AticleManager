@@ -1,16 +1,35 @@
 package org.example.controller;
 
-import org.example.Container;
+import org.example.util.Container;
 import org.example.util.Util;
 import org.example.vo.Member;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemberController {
+public class MemberController extends Controller {
 
     private int lastId = 3;
     private List<Member> memberList = new ArrayList<Member>();
+    private String cmd;
+
+    @Override
+    public void doAction(String cmd, String actionMethodName) {
+        this.cmd = cmd;
+        switch (actionMethodName) {
+            case "join":
+                join();
+                break;
+            case "list":
+                list();
+                break;
+            case "login":
+                login();
+                break;
+            default:
+                break;
+        }
+    }
 
     public void join() {
 
@@ -61,6 +80,23 @@ public class MemberController {
         }
     }
 
+    public void login() {
+        while(true){
+            System.out.print("아이디 : ");
+            String loginId = Container.getScanner().nextLine().trim();
+            System.out.print("비밀번호 : ");
+            String loginPass = Container.getScanner().nextLine().trim();
+            if (isJoinableLogin(loginId,loginPass)) {
+                System.out.println("로그인 되었습니다.");
+                String name = chkName(loginId);
+                System.out.println(name + "님 환영합니다.");
+                break;
+            } else {
+                System.out.println("아이디 또는 비밀번호가 일치하지 않습니다.");
+            }
+        }
+    }
+
     private boolean isJoinableLoginId(String loginId) {
         for(Member members : memberList){
             if(members.getLoginId().equals(loginId)) {
@@ -68,6 +104,25 @@ public class MemberController {
             }
         }
         return true;
+    }
+
+    private boolean isJoinableLogin(String loginId, String loginPass) {
+        for(Member members : memberList){
+            if(members.getLoginId().equals(loginId) && members.getLoginId().equals(loginPass)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String chkName(String loginId) {
+        String name = "";
+        for(Member members : memberList){
+            if(members.getLoginId().equals(loginId)) {
+                name = members.getLoginName();
+            }
+        }
+        return name;
     }
 
     public void makeTestData() {
