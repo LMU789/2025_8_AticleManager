@@ -9,25 +9,25 @@ import java.util.List;
 
 public class MemberController {
 
-    int lastId = 3;
-    static List<Member> memberList = new ArrayList<Member>();
+    private int lastId = 3;
+    private List<Member> memberList = new ArrayList<Member>();
 
     public void join() {
 
         System.out.println("== 회원가입 ==");
-        String loginId;
+        String loginId = null;
         while(true){
             System.out.print("아이디 : ");
             loginId = Container.getScanner().nextLine().trim();
             if (isJoinableLoginId(loginId)) {
-                System.out.println("아이디 사용 가능\n");
+                System.out.println("사용 가능한 아이디 입니다.");
                 break;
             } else {
                 System.out.println("중복된 아이디입니다. 다시 입력하세요.");
             }
         }
 
-        String loginPass;
+        String loginPass = null;
         while(true){
             System.out.print("비밀번호 : ");
             loginPass = Container.getScanner().nextLine().trim();
@@ -55,12 +55,13 @@ public class MemberController {
     }
 
     public void list() {
+        System.out.println("=".repeat(30));
         for (Member member : memberList) {
             System.out.println("member" + member.toString());
         }
     }
 
-    private static boolean isJoinableLoginId(String loginId) {
+    private boolean isJoinableLoginId(String loginId) {
         for(Member members : memberList){
             if(members.getLoginId().equals(loginId)) {
                 return false;
@@ -69,12 +70,7 @@ public class MemberController {
         return true;
     }
 
-    public void make() {
-        makeTestDate();
-    }
-
-    private static void makeTestDate() {
-        System.out.println("테스트 데이터 생성됨");
+    public void makeTestData() {
         memberList.add(new Member(1,"aaa","zzz","홍길동","2025-08-31 12:30:30"));
         memberList.add(new Member(2,"bbb","xxx","김철수","2025-08-31 12:30:30"));
         memberList.add(new Member(3,"ccc","ccc","김영희","2025-08-31 12:30:30"));

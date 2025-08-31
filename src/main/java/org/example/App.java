@@ -6,15 +6,15 @@ import org.example.system.SystemController;
 
 public class App {
 
+    SystemController systemController = new SystemController();
+    ArticleController articleController = new ArticleController();
+    MemberController memberController = new MemberController();
+
     public void run() {
 
-        SystemController systemController = new SystemController();
-        ArticleController articleController = new ArticleController();
-        MemberController memberController = new MemberController();
-
         systemController.start();
-        articleController.make();
-        memberController.make();
+        articleController.makeTestData();
+        memberController.makeTestData();
 
         while(true){
 

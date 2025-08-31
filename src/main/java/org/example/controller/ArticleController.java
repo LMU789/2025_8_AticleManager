@@ -3,17 +3,15 @@ package org.example.controller;
 import org.example.Container;
 import org.example.util.Util;
 import org.example.vo.Article;
-import org.example.vo.Rq;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ArticleController {
 
-    int lastId = 3;
-    static List<Article> articleList = new ArrayList<Article>();
-    int id = -1;
+    private int lastId = 3;
+    private List<Article> articleList = new ArrayList<Article>();
+    private int id = -1;
 
     public void write() {
 
@@ -35,7 +33,7 @@ public class ArticleController {
     }
 
     public void list(String cmd) {
-        System.out.println("=".repeat(30));
+        System.out.println("=".repeat(50));
         System.out.println("번호      /      제목     /      내용     /      날짜");
 
         if (articleList.size() == 0) {
@@ -67,7 +65,6 @@ public class ArticleController {
     }
 
     public void detail(String cmd) {
-
 
         try {
             id = Integer.parseInt(cmd.split(" ")[2]);
@@ -152,18 +149,13 @@ public class ArticleController {
 
     }
 
-    public void make() {
-        makeTestDate();
-    }
-
-    private static void makeTestDate() {
-        System.out.println("테스트 데이터 생성됨");
+    public void makeTestData() {
         articleList.add(new Article(1,"제목1","내용1","2025-08-31 12:30:30"));
         articleList.add(new Article(2,"제목2","내용2","2025-08-30 11:35:22"));
         articleList.add(new Article(3,"제목3","내용3","2025-08-29 15:11:53"));
     }
 
-    private static Article getArticleById(int id) {
+    private Article getArticleById(int id) {
         for(Article article : articleList) {
             if(article.getId() == id) {
                 return article;
