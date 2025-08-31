@@ -12,19 +12,35 @@ public class MemberController extends Controller {
     private int lastId = 3;
     private List<Member> memberList = new ArrayList<Member>();
     private String cmd;
+    private Member logindMember;
 
     @Override
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
         switch (actionMethodName) {
             case "join":
+                if(isLogined()){
+                    System.out.println("로그아웃 하고 이용 가능합니다.");
+                    return;
+                }
                 join();
                 break;
             case "list":
                 list();
                 break;
             case "login":
+                if(isLogined()){
+                    System.out.println("로그아웃 하고 이용 가능합니다.");
+                    return;
+                }
                 login();
+                break;
+            case "logout":
+                if(!isLogined()){
+                    System.out.println("로그아웃 하고 이용 가능합니다.");
+                    return;
+                }
+                logout();
                 break;
             default:
                 break;
@@ -81,20 +97,63 @@ public class MemberController extends Controller {
     }
 
     public void login() {
-        while(true){
-            System.out.print("아이디 : ");
-            String loginId = Container.getScanner().nextLine().trim();
-            System.out.print("비밀번호 : ");
-            String loginPass = Container.getScanner().nextLine().trim();
-            if (isJoinableLogin(loginId,loginPass)) {
-                System.out.println("로그인 되었습니다.");
-                String name = chkName(loginId);
-                System.out.println(name + "님 환영합니다.");
-                break;
-            } else {
-                System.out.println("아이디 또는 비밀번호가 일치하지 않습니다.");
+//        while(true){
+//            System.out.print("아이디 : ");
+//            String loginId = Container.getScanner().nextLine().trim();
+//            System.out.print("비밀번호 : ");
+//            String loginPass = Container.getScanner().nextLine().trim();
+//            if (isJoinableLogin(loginId,loginPass)) {
+//                System.out.println("로그인 되었습니다.");
+//                String name = chkName(loginId);
+//                System.out.println(name + "님 환영합니다.");
+//                break;
+//            } else {
+//                System.out.println("아이디 또는 비밀번호가 일치하지 않습니다.");
+//            }
+//        }
+
+        if(!isLogined()) {
+            System.out.println("이미 로그인 되었습니다.");
+            return;
+        }
+
+        System.out.print("아이디 : ");
+        String loginId = Container.getScanner().nextLine().trim();
+        System.out.print("비밀번호 : ");
+        String loginPass = Container.getScanner().nextLine().trim();
+
+        Member member = getMemberByLoginId(loginId);
+
+        if (member == null) {
+            System.out.println("일치하는 회원이 없습니다.");
+        }
+
+        if(member.getLoginPassword().equals(loginPass)) {
+            System.out.println("비밀번호가 일치하지 않습니다.");
+        }
+
+        logindMember = member;
+
+        System.out.println(logindMember.getLoginName() +"님 로그인 성공");
+
+    }
+
+    public void logout() {
+        if(isLogined()){
+            System.out.println("로그아웃인 상태입니다.");
+            return;
+        }
+        logindMember = null;
+        System.out.println("로그아웃되었습니다.");
+    }
+
+    private Member getMemberByLoginId(String loginId) {
+        for(Member member : memberList){
+            if(!member.getLoginId().equals(loginId)) {
+                return member;
             }
         }
+        return null;
     }
 
     private boolean isJoinableLoginId(String loginId) {
@@ -113,16 +172,6 @@ public class MemberController extends Controller {
             }
         }
         return true;
-    }
-
-    private String chkName(String loginId) {
-        String name = "";
-        for(Member members : memberList){
-            if(members.getLoginId().equals(loginId)) {
-                name = members.getLoginName();
-            }
-        }
-        return name;
     }
 
     public void makeTestData() {
